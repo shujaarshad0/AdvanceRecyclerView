@@ -10,14 +10,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.Collections;
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemTouchHelperAdapter, View.OnTouchListener {
 
@@ -82,14 +81,14 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     public class VHItem extends RecyclerView.ViewHolder implements View.OnClickListener ,ItemTouchHelperViewHolder{
         public TextView title;
-        private CircleImageView imageView;
+        private AppCompatImageView imageView;
         private ImageView image_menu;
 
         public VHItem(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.name);
             image_menu = (ImageView) itemView.findViewById(R.id.image_menu);
-            imageView = (CircleImageView) itemView.findViewById(R.id.circle_imageView);
+            imageView = (AppCompatImageView) itemView.findViewById(R.id.imageView);
 //            itemView.setOnClickListener(this);
             itemView.setOnTouchListener(ItemAdapter.this);
         }

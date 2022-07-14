@@ -42,10 +42,8 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        mRecyclerView = findViewById(R.id.recycler_view);
 
+        mRecyclerView = findViewById(R.id.recycler_view);
         fab = (FloatingActionButton) findViewById(R.id.fab);
         subtract_button = (AppCompatButton) findViewById(R.id.subtract_button);
         add_button = (AppCompatButton) findViewById(R.id.add_button);
@@ -142,28 +140,6 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
 
     public float convertDpToPx(float dp) {
         return dp * getResources().getDisplayMetrics().density;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
