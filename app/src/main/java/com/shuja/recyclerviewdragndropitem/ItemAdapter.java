@@ -3,6 +3,7 @@ package com.shuja.recyclerviewdragndropitem;
 import android.content.Context;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,6 +29,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     private Context mContext;
     private ScaleAnim scaleAnim;
     private MediaPlayer startSound, endSound;
+    private View v;
 
     public ItemAdapter(Context context, List<ItemModel> list, OnStartDragListener dragListner) {
         this.mPersonList = list;
@@ -44,7 +46,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         if (viewType == TYPE_ITEM) {
             //inflate your layout and pass it to view holder
             View v = mInflater.inflate(R.layout.person_item, viewGroup, false);
-            return new VHItem(v );
+            return new VHItem(v);
         }
 
         throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
@@ -81,22 +83,19 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     public class VHItem extends RecyclerView.ViewHolder implements View.OnClickListener ,ItemTouchHelperViewHolder{
         public TextView title;
-        private AppCompatImageView imageView;
-        private ImageView image_menu;
+        final private AppCompatImageView imageView;
 
         public VHItem(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.name);
-            image_menu = (ImageView) itemView.findViewById(R.id.image_menu);
             imageView = (AppCompatImageView) itemView.findViewById(R.id.imageView);
-//            itemView.setOnClickListener(this);
             itemView.setOnTouchListener(ItemAdapter.this);
         }
 
         @Override
         public void onClick(View v) {
             if (mItemClickListener != null) {
-                mItemClickListener.onItemClick(v, getAdapterPosition());
+                mItemClickListener.onItemClick(v, getAbsoluteAdapterPosition());
             }
         }
 
@@ -121,10 +120,10 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        scaleAnim = new ScaleAnim(v);
+        /*scaleAnim = new ScaleAnim(v);
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                startSound.start();
+             //   startSound.start();
 //                startScale();
                 break;
 
@@ -132,7 +131,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 //                endSound.start();
 //                stopScale();
                 break;
-        }
+        }*/
         return true;
     }
 
@@ -143,16 +142,22 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
+    public void onItemLongClick(View v) {
+        this.v = v;
+        //startSound.start();
+    }
+
+    @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
-        startSound.start();
-        //Log.v("", "Log position" + fromPosition + " " + toPosition);
         if (fromPosition < mPersonList.size() && toPosition < mPersonList.size()) {
             if (fromPosition < toPosition) {
                 for (int i = fromPosition; i < toPosition; i++) {
+                    v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
                     Collections.swap(mPersonList, i, i + 1);
                 }
             } else {
                 for (int i = fromPosition; i > toPosition; i--) {
+                    v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
                     Collections.swap(mPersonList, i, i - 1);
                 }
             }

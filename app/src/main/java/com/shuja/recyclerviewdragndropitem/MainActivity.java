@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
     private AppCompatButton subtract_button, add_button;
     private View touch_view;
     private float addButtonWidth, subtractButtonWidth;
+    private ScaleAnim scaleAnim;
 
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -48,12 +49,13 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
         subtract_button = (AppCompatButton) findViewById(R.id.subtract_button);
         add_button = (AppCompatButton) findViewById(R.id.add_button);
         touch_view = (View) findViewById(R.id.touch_view);
+        scaleAnim = new ScaleAnim(fab);
 
         //Getting the width of views that have to be animated
-        //In our case the add and subtract buttons width isn 50 dp
+        //In our case the add and subtract buttons width is 40 dp
         //Therefore we convert dp to pixels for different screen sizes support
-        addButtonWidth = convertDpToPx(50f);
-        subtractButtonWidth = convertDpToPx(50f);
+        addButtonWidth = convertDpToPx(40f);
+        subtractButtonWidth = convertDpToPx(40f);
 
         touch_view.setOnTouchListener(this);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -112,16 +114,23 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
     }
 
     public void openQuantityBox() {
+        startScale();
         touch_view.setVisibility(View.VISIBLE);
         add_button.setVisibility(View.VISIBLE);
         subtract_button.setVisibility(View.VISIBLE);
 
+        //Multiplying the with of floating button to 1.2
+        //because the animation scales up the size of the floating button
+        int fabBtnWidth = (int) Math.round(fab.getWidth() * 1.2);
+
         //Negate(-) the value of with for animating the view from LTR
-        add_button.animate().translationX(-(addButtonWidth + subtractButtonWidth)).setDuration(400).setInterpolator(new CustomBounce(0.3, 10));
-        subtract_button.animate().translationX(-subtractButtonWidth).setDuration(200).setInterpolator(new CustomBounce(0.3, 10));
+        //Adding 10 px to the add_button because of margin
+        add_button.animate().translationX(-(addButtonWidth + fabBtnWidth + 10)).setDuration(400).setInterpolator(new CustomBounce(0.3, 10));
+        subtract_button.animate().translationX(-fabBtnWidth).setDuration(200).setInterpolator(new CustomBounce(0.3, 10));
     }
 
     public void closeQuantityBox() {
+        stopScale();
         touch_view.setVisibility(View.GONE);
 
         //Translate to zero for bringing views back to their original positions
@@ -151,4 +160,13 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
     public void onStopDrag(RecyclerView.ViewHolder viewHolder) {
 
     }
+
+    protected void startScale() {
+        scaleAnim.start();
+    }
+
+    protected void stopScale() {
+        scaleAnim.stop();
+    }
+
 }
