@@ -1,4 +1,3 @@
 # Advance Recyclerview with Drag and Drop (Reorder) Item
 - Project Features:
-Item reordering.
-Custom animation on views.
+Item reordering and Custom animation on views.
